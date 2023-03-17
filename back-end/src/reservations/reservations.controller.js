@@ -40,7 +40,7 @@ function timePropertyIsValid(req, res, next) {
 function reservationIsNotForTuesday(req, res, next) {
   const { reservation_date } = req.body.data;
   const date = new Date(reservation_date);
-  if (date.getDay() !== 1) {
+  if (date.getUTCDay() !== 2) {
     return next();
   } else {
     return next({
