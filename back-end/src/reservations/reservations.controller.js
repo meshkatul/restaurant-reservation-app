@@ -39,15 +39,16 @@ function timePropertyIsValid(req, res, next) {
 
 function reservationIsNotForTuesday(req, res, next) {
   const { reservation_date } = req.body.data;
-  const date = new Date(reservation_date);
-  if (date.getUTCDay() !== 2) {
+  let [year, month, date] = reservation_date.split("-");
+  month -= 1;
+  const day = new Date(year, month, date).getDay();
+  if (day !== 2) {
     return next();
-  } else {
-    return next({
-      status: 400,
-      message: `Sorry! We are closed on Tuesdays.`,
-    });
   }
+  return next({
+    status: 400,
+    message: `Sorry! We are closed on Tuesdays`,
+  });
 }
 
 function reservationIsForFuture(req, res, next) {
